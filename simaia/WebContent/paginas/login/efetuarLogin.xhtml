@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      			xmlns:h="http://java.sun.com/jsf/html"
+      			xmlns:f="http://java.sun.com/jsf/core"
+      			xmlns:ui="http://java.sun.com/jsf/facelets"
+      			xmlns:p="http://primefaces.org/ui" 
+      			template="/template/template.xhtml" > 
+
+
+	<ui:define name="conteudo">
+				<h:form>  
+ 			    
+ 			    <p:spacer height="50" />
+ 			    
+ 			    <center>
+ 			        
+ 			        <p:messages id="mensagens" showDetail="false" autoUpdate="true" closable="true" />
+ 			        
+ 			        <p:fieldset style="width: 800px;">
+ 			             <h1 style="color : #2A649E;">Login do Usuário</h1>
+ 			        </p:fieldset>
+ 			        <br />
+ 			        <br />
+				    <p:fieldset style="width: 800px;">
+				     
+				        <h:panelGrid columns="3" cellpadding="5" width="800px">
+				             	
+						        <p:outputLabel for="idLogin" value="Login:"/>
+						        <p:inputText id="idLogin"  required="true" value="#{loginBean.username}" maxlength="10" size="10" requiredMessage="Por favor informe o seu nome do usuario!"/>
+						        <p:tooltip for="idLogin" showEvent="focus" hideEvent="blur" /> 
+						        
+						        <p:outputLabel for="idSenha" value="Senha:" />
+						        <p:password id="idSenha" required="true" value="#{loginBean.password}" title="Informe a senha (Max 10 caracteres)" maxlength="10" size="10" requiredMessage="Por favor informe sua senha!"/>
+						        <p:tooltip for="idSenha" showEvent="focus" hideEvent="blur" />
+				        </h:panelGrid>
+				          
+				    </p:fieldset>
+			    
+			    </center>
+			    
+			    <p:spacer height="50" />
+			    
+			    <center>  
+			      
+				    <p:fieldset style="width: 800px;">
+				         
+				         <p:commandButton id="efetuarLogin" action="#{loginBean.efetuarLogin()}"  value="Efetuar Login" update="mensagens"/>
+				         
+				    </p:fieldset>
+			    
+			    </center>
+			    
+			    <br />
+			    <br /> 
+			      
+			</h:form>
+	</ui:define>
+</ui:composition>

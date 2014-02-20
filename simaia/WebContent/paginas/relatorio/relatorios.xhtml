@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      			xmlns:h="http://java.sun.com/jsf/html"
+      			xmlns:f="http://java.sun.com/jsf/core"
+      			xmlns:ui="http://java.sun.com/jsf/facelets"
+      			xmlns:p="http://primefaces.org/ui" 
+      			template="/template/template.xhtml" > 
+
+
+	<ui:define name="conteudo">
+	
+	        <h:form id="formRelatorio">
+	        
+	             <p:spacer height="50" />
+ 			    
+ 			    <center>
+ 			        
+ 			        <p:messages id="mensagens" showDetail="false" autoUpdate="true" closable="true" />
+ 			        
+ 			        <p:fieldset style="width: 800px;">
+ 			             <h1 style="color : #2A649E;">Relatórios</h1>
+ 			        </p:fieldset>
+ 			        <br />
+ 			        <br />
+				    <p:fieldset style="width: 800px; height:800px">
+				     
+				         <h:panelGroup>
+		                   <p:outputLabel for="idTipoRelatorio" value="Selecione o tipo de relatório a consultar:" />    
+			           </h:panelGroup>
+			           
+			           <br/>
+			           <br/>
+			           
+		               <p:selectOneMenu id="idTipoRelatorio" value="#{RelatoriosBean.tipoRelatorio}">  
+				          <f:selectItems value="#{RelatoriosBean.tipoRelatorios}" var="relatorio" itemLabel="#{relatorio.nomeRelatorio}" itemValue="#{relatorio.tipoRelatorio}"/>
+				          <p:ajax update=":formRelatorio" listener="#{RelatoriosBean.selecionaRelatorio}" />    
+				       </p:selectOneMenu>
+			           
+	                   <h:panelGroup rendered="#{RelatoriosBean.exibeInput}">
+	                       
+	                       <br/>
+	                       <br/>
+	                       <h:panelGroup>
+			                   <p:outputLabel rendered="#{RelatoriosBean.exibeDataAnualGeral}" for="dataIniGeralAno" value="Informe o Ano Incial" />    
+				           </h:panelGroup>
+				           
+				           <h:panelGroup>
+			                   <p:outputLabel rendered="#{RelatoriosBean.exibeDataMesGeral}" for="dataIniGeralMes" value="Informe o Mês Incial" />    
+				           </h:panelGroup>
+				           
+				           <h:panelGroup>
+			                   <p:outputLabel rendered="#{RelatoriosBean.exibeDataAnualCategoria}" for="dataIniCategoriaAno" value="Informe o Ano Incial" />    
+				           </h:panelGroup>
+				           
+				           <h:panelGroup>
+			                   <p:outputLabel rendered="#{RelatoriosBean.exibeDataMesCategoria}" for="dataIniCategoriaMes" value="Informe o Mês Incial" />    
+				           </h:panelGroup>
+				           
+				           <h:panelGroup>
+			                   <p:outputLabel rendered="#{RelatoriosBean.exibeDataPerido}" for="dataInicial" value="Informe a data Incial" />    
+				           </h:panelGroup>
+				           <br/>
+				           <h:panelGroup>
+			                   <p:calendar rendered="#{RelatoriosBean.exibeDataAnualGeral}" id="dataIniGeralAno" value="#{RelatoriosBean.dataInicial}"  pattern="yyyy"/>    
+				           </h:panelGroup>
+				           
+				           <h:panelGroup>
+			                   <p:calendar rendered="#{RelatoriosBean.exibeDataMesGeral}" id="dataIniGeralMes" value="#{RelatoriosBean.dataInicial}" pattern="MM/yyyy"/>    
+				           </h:panelGroup>
+				           
+				           <h:panelGroup>
+			                   <p:calendar rendered="#{RelatoriosBean.exibeDataAnualCategoria}" id="dataIniCategoriaAno" value="#{RelatoriosBean.dataInicial}" pattern="yyyy"/>    
+				           </h:panelGroup>
+				           
+				           <h:panelGroup>
+			                   <p:calendar rendered="#{RelatoriosBean.exibeDataMesCategoria}" id="dataIniCategoriaMes" value="#{RelatoriosBean.dataInicial}" pattern="MM/yyyy"/>    
+				           </h:panelGroup>
+				           
+				           <h:panelGroup>
+			                   <p:calendar rendered="#{RelatoriosBean.exibeDataPerido}" id="dataInicial" value="#{RelatoriosBean.dataInicial}" pattern="dd/MM/yyyy" />    
+				           </h:panelGroup>
+				           <br/>
+				           <br/>
+				           <h:panelGroup>
+			                   <p:outputLabel rendered="#{RelatoriosBean.exibeDataAnualGeral}" for="dataFimGeralAno" value="Informe o Ano Final" />    
+				           </h:panelGroup>
+				           
+				           <h:panelGroup>
+			                   <p:outputLabel rendered="#{RelatoriosBean.exibeDataMesGeral}" for="dataFimGeralMes" value="Informe o Mês Final" />    
+				           </h:panelGroup>
+				           
+				           <h:panelGroup>
+			                   <p:outputLabel rendered="#{RelatoriosBean.exibeDataAnualCategoria}" for="dataFimCategoriaAno" value="Informe o Ano Final" />    
+				           </h:panelGroup>
+				           
+				           <h:panelGroup>
+			                   <p:outputLabel rendered="#{RelatoriosBean.exibeDataMesCategoria}" for="dataFimCategoriaMes" value="Informe o Mês Final" />    
+				           </h:panelGroup>
+				           
+				           <h:panelGroup>
+			                   <p:outputLabel rendered="#{RelatoriosBean.exibeDataPerido}" for="dataFinal" value="Informe a data Final"  />    
+				           </h:panelGroup>
+				           <br/>
+				           <h:panelGroup>
+			                   <p:calendar rendered="#{RelatoriosBean.exibeDataAnualGeral}" id="dataFimGeralAno" value="#{RelatoriosBean.dataFinal}" pattern="yyyy"/>    
+				           </h:panelGroup>
+				           
+				           <h:panelGroup>
+			                   <p:calendar rendered="#{RelatoriosBean.exibeDataMesGeral}" id="dataFimGeralMes" value="#{RelatoriosBean.dataFinal}" pattern="MM/yyyy"/>    
+				           </h:panelGroup>
+				           
+				           <h:panelGroup>
+			                   <p:calendar rendered="#{RelatoriosBean.exibeDataAnualCategoria}" id="dataFimCategoriaAno" value="#{RelatoriosBean.dataFinal}" pattern="yyyy"/>    
+				           </h:panelGroup>
+				           
+				           <h:panelGroup>
+			                   <p:calendar rendered="#{RelatoriosBean.exibeDataMesCategoria}" id="dataFimCategoriaMes" value="#{RelatoriosBean.dataFinal}" pattern="MM/yyyy"/>    
+				           </h:panelGroup>
+				           
+				           <h:panelGroup>
+			                   <p:calendar rendered="#{RelatoriosBean.exibeDataPerido}" id="dataFinal" value="#{RelatoriosBean.dataFinal}" pattern="dd/MM/yyyy" />    
+				           </h:panelGroup>
+				           <br/>
+				           <br/>
+				           <h:panelGroup>
+				              <p:outputLabel rendered="#{RelatoriosBean.exibeCombocategoria}" for="combocategoria" value="Categoria:" /><br /><br />
+				           </h:panelGroup>
+					       <h:panelGroup>
+					       
+					            <p:selectOneMenu rendered="#{RelatoriosBean.exibeCombocategoria}" id="combocategoria" value="#{RelatoriosBean.idCategoria}">  
+							        <f:selectItem itemLabel="Selecione uma categoria" itemValue="0" />  
+							        <f:selectItems value="#{RelatoriosBean.categorias}" var="categoria" itemLabel="#{categoria.nomeCategoria}" itemValue="#{categoria.id}"/>   
+							    </p:selectOneMenu>
+							    
+						   </h:panelGroup>
+	                   
+	                   </h:panelGroup>
+	                   
+	                   <br/>
+	                   <br/>
+	                   <p:commandButton update=":formRelatorio" action="#{RelatoriosBean.consultaRelatorioDespesa}" value="Emitir Relatório" rendered="#{RelatoriosBean.exibeBotao}" title="Emitir Relatorios de Despesas" ajax="false" />
+	                   <p:commandButton value="Voltar Menu" action="menu" />
+	                   <br/>
+	                   
+	                   <p:panel rendered="#{RelatoriosBean.exibeResultado}" header="Resultado de Pesquisa" style="width: 1042px; left: 414px;">
+	          
+			                <p:lineChart id="categoryGeral" value="#{RelatoriosBean.categoryModel}" legendPosition="e" rendered="#{RelatoriosBean.exibeDataAnualGeral}"  
+		                                 title="Despesas por Ano" minY="0" maxY="#{RelatoriosBean.max}" />
+		                                 
+		                    <p:lineChart id="categoryGeralCategoria" value="#{RelatoriosBean.categoryModel}" legendPosition="e" rendered="#{RelatoriosBean.exibeDataAnualCategoria}"  
+		                                 title="Despesas por Ano e Categoria" minY="0" maxY="#{RelatoriosBean.max}" />
+		                                 
+		                    <p:lineChart id="categoryMes" value="#{RelatoriosBean.categoryModel}" legendPosition="e" rendered="#{RelatoriosBean.exibeDataMesGeral}"  
+		                                 title="Despesas por Mês" minY="0" maxY="#{RelatoriosBean.max}" />
+		                    
+		                    <p:lineChart id="categoryMesCategoria" value="#{RelatoriosBean.categoryModel}" legendPosition="e" rendered="#{RelatoriosBean.exibeDataMesCategoria}"  
+		                                 title="Despesas por Mês e Categoria" minY="0" maxY="#{RelatoriosBean.max}" />     
+		                    
+		                    <p:pieChart id="categoriaPeriodo" value="#{RelatoriosBean.pieModel}" rendered="#{RelatoriosBean.exibeDataPeridoCategoria}" legendPosition="e" showDataLabels="true"  
+		                                 title="Despesas por Periodo e Categoria" sliceMargin="5" diameter="150" />                                                
+			                
+			          </p:panel>
+				          
+				    </p:fieldset>
+			    
+			    </center>
+			    
+			    <p:spacer height="50" />
+			    
+	        
+	        
+	        </h:form>
+				
+	</ui:define>
+</ui:composition>

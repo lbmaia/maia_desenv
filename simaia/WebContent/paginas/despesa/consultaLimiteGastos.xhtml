@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      			xmlns:h="http://java.sun.com/jsf/html"
+      			xmlns:f="http://java.sun.com/jsf/core"
+      			xmlns:ui="http://java.sun.com/jsf/facelets"
+      			xmlns:p="http://primefaces.org/ui" 
+      			template="/template/template.xhtml" > 
+
+
+	<ui:define name="conteudo">
+	
+	        <h:form id="formLimite">
+	        
+	             <p:spacer height="50" />
+ 			    
+ 			    <center>
+ 			        
+ 			        <p:messages id="mensagens" showDetail="false" autoUpdate="true" closable="true" />
+ 			        
+ 			        <p:fieldset style="width: 800px;">
+ 			             <h1 style="color : #2A649E;">Consulta Limites de Gastos</h1>
+ 			        </p:fieldset>
+ 			        <br />
+ 			        <br />
+				    <p:fieldset style="width: 800px;">
+				     
+				        		<p:outputLabel for="mes" value="Mes:"/>  
+				        		<p:spacer height="10px" />
+						        <p:inputText id="mes" value="#{limitesBean.mes}" title="Informe o mês (MM)" maxlength="2" size="2"/>
+						        <p:spacer height="10px"/>
+						        <p:outputLabel for="ano" value="Ano:"/>  
+				        		<p:spacer height="10px" />
+						        <p:inputText id="ano" value="#{limitesBean.ano}" title="Informe a ano (YYYY)" maxlength="4" size="4"/>
+	                            
+	                            <br />
+	                            <br />
+	                            <br />				            
+					            <p:commandButton action="#{limitesBean.consultaDespesas()}" update=":formLimite:medidor, :formLimite:despesas"  value="Pesquisar"/>
+					            <p:spacer width="10px" />
+					            <p:commandButton value="Voltar Menu" action="#{menuBean.retornaMenu()}" />
+					
+					      
+				    </p:fieldset>
+				    
+				    <br />
+				    
+				    <p:fieldset style="width: 800px;">
+                           
+                           <p:meterGaugeChart id="medidor" seriesColors="66cc66, 66cc66, 93b75f, E7E658, cc6666" value="#{limitesBean.medidorGastos}" style="width:400px;height:250px" title="Medidor de Gastos" labelHeightAdjust="110" intervalOuterRadius="100" label="Reais"/> 
+				           
+				           <p:spacer height="20px"/>				     
+				           
+				           <p:dataTable id="despesas" var="despesa" value="#{limitesBean.gastos}">  
+					  
+					        <f:facet name="header">  
+					            Despesas  
+					        </f:facet>  
+					  
+					        <p:column headerText="Categoria" style="width:30%">  
+					              <h:outputText value="#{despesa.nomeCategoria}" />  
+					        </p:column>
+					        
+					        <p:column headerText="Valor" style="width:20%">  
+					              <h:outputText value="#{despesa.valorTotal}" >
+					                 <f:convertNumber type="currency" maxFractionDigits="2" minFractionDigits="2" />
+					              </h:outputText>  
+					        </p:column>  
+					        
+					        <f:facet name="footer">  
+					              <h:outputText value="Valor Total: " />
+					              <p:spacer width="20px"/>
+					              <h:outputText value="#{limitesBean.valorTotalDespesa}" >
+					                 <f:convertNumber type="currency" maxFractionDigits="2" minFractionDigits="2" />
+					              </h:outputText>
+					        </f:facet>
+					  
+					    </p:dataTable>
+				           
+				           <p:spacer height="20px"/> 
+				          
+				    </p:fieldset>
+			    
+			    </center>
+			    
+			    <p:spacer height="50" />
+			    
+	        
+	        
+	        </h:form>
+				
+	</ui:define>
+</ui:composition>

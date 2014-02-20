@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<faces-config
+    xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+    version="2.0">
+    
+     <navigation-rule>
+    
+	    <from-view-id>*</from-view-id>
+	    
+	    <navigation-case>
+	       <from-outcome>login</from-outcome>
+	       <to-view-id>/paginas/login/efetuarLogin.jsf</to-view-id>
+	       <redirect/>
+	    </navigation-case>
+	    
+	    <navigation-case>
+	       <from-outcome>menu</from-outcome>
+	       <to-view-id>/paginas/menu/menu.jsf</to-view-id>
+	       <redirect/>
+	    </navigation-case>
+	    
+	    <navigation-case>
+	       <from-outcome>cadCategoria</from-outcome>
+	       <to-view-id>/paginas/categoria/manterCategoria.jsf</to-view-id>
+	       <redirect/>
+	    </navigation-case>
+	    
+	    <navigation-case>
+	       <from-outcome>consultaCategoria</from-outcome>
+	       <to-view-id>/paginas/categoria/consultaCategoria.jsf</to-view-id>
+	       <redirect/>
+	    </navigation-case>
+	    
+	    <navigation-case>
+	       <from-outcome>cadDespesa</from-outcome>
+	       <to-view-id>/paginas/despesa/manterDespesa.jsf</to-view-id>
+	       <redirect/>
+	    </navigation-case>
+	    
+	    <navigation-case>
+	       <from-outcome>consultaDespesa</from-outcome>
+	       <to-view-id>/paginas/despesa/consultaDespesa.jsf</to-view-id>
+	       <redirect/>
+	    </navigation-case>
+	    
+	    <navigation-case>
+	       <from-outcome>pagarDespesa</from-outcome>
+	       <to-view-id>/paginas/despesa/pagamentoDespesa.jsf</to-view-id>
+	       <redirect/>
+	    </navigation-case>
+	    
+	    <navigation-case>
+	       <from-outcome>consultaLimites</from-outcome>
+	       <to-view-id>/paginas/despesa/consultaLimiteGastos.jsf</to-view-id>
+	       <redirect/>
+	    </navigation-case>
+	    
+	    <navigation-case>
+	       <from-outcome>cadUsuario</from-outcome>
+	       <to-view-id>/paginas/usuario/manterUsuario.jsf</to-view-id>
+	       <redirect/>
+	    </navigation-case>
+	    
+	    <navigation-case>
+	       <from-outcome>consultaUsuario</from-outcome>
+	       <to-view-id>/paginas/usuario/consultaUsuario.jsf</to-view-id>
+	       <redirect/>
+	    </navigation-case>
+	    
+	    <navigation-case>
+	       <from-outcome>relatorio</from-outcome>
+	       <to-view-id>/paginas/relatorio/relatorios.jsf</to-view-id>
+	       <redirect/>
+	    </navigation-case>
+	    
+	    </navigation-rule>
+
+</faces-config>

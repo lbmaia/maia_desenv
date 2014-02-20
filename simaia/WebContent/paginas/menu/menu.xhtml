@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/template/template.xhtml">
+	
+	<ui:define name="conteudo">
+	    
+	    <h:form id="formMenu">
+	     
+	       <center>
+	       
+	       <p:menubar style="width: 1042px;">  
+	       
+		        <p:submenu label="Cadastro" icon="ui-icon-document">  
+		            <p:menuitem value="Categoria" action="cadCategoria" />  
+		            <p:menuitem value="Despesa" action="cadDespesa" />
+		            <p:menuitem value="Usuario" action="cadUsuario" />  
+		        </p:submenu>
+		        
+		        <p:submenu label="Consultas" icon="ui-icon-document">  
+		            <p:menuitem value="Categoria" action="consultaCategoria" />  
+		            <p:menuitem value="Despesa" action="consultaDespesa" />
+		            <p:menuitem value="Usuario" action="consultaUsuario" />  
+		        </p:submenu>
+		        
+		        <p:submenu label="Pagamento" icon="ui-icon-document">  
+		            <p:menuitem value="Despesa" action="pagarDespesa" />
+		        </p:submenu>  
+		  
+		        <p:submenu label="Planejamento" icon="ui-icon-pencil">  
+		              
+		        </p:submenu>  
+		  
+		        <p:submenu label="Relatórios" icon="ui-icon-help">  
+		            <p:menuitem value="Emitir" action="relatorio" />  
+		            <p:menuitem value="Limite de Gastos" action="consultaLimites" />
+		        </p:submenu>  
+		  
+		        <p:menuitem style="float: right;" value="Sair da Aplicação" action="login" icon="ui-icon-close" />
+		           
+		       		  
+		    </p:menubar> 
+	     
+	        </center>
+	        
+	        
+	        <p:spacer height="450px" />
+	     
+	    </h:form>		
+	</ui:define>
+
+</ui:composition>
+	

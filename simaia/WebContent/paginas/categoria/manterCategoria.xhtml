@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      			xmlns:h="http://java.sun.com/jsf/html"
+      			xmlns:f="http://java.sun.com/jsf/core"
+      			xmlns:ui="http://java.sun.com/jsf/facelets"
+      			xmlns:p="http://primefaces.org/ui" 
+      			template="/template/template.xhtml" > 
+
+
+	<ui:define name="conteudo">
+				<h:form id="formCategoria">  
+ 			    
+ 			    <p:spacer height="50" />
+ 			    
+ 			    <center>
+ 			        
+ 			        <p:messages id="mensagens" showDetail="false" autoUpdate="true" closable="true" />
+ 			        
+ 			        <p:fieldset style="width: 800px;">
+ 			             <h1 style="color : #2A649E;">Cadastro de Categorias</h1>
+ 			        </p:fieldset>
+ 			        <br />
+ 			        <br />
+				    <p:fieldset style="width: 800px;">
+				     
+				        <h:panelGrid columns="3" cellpadding="5" width="800px">
+				    
+				             	<p:outputLabel for="idNomeCategoria" value="Nome Categoria:"/>  
+						        <p:inputText id="idNomeCategoria" value="#{categoriaBean.categoria.nomeCategoria}" title="Informe o nome da Categoria" maxlength="30" size="30"/>
+						        <p:tooltip for="idNomeCategoria" showEvent="focus" hideEvent="blur" />  
+						        
+				        </h:panelGrid>
+				          
+				    </p:fieldset>
+			    
+			    </center>
+			    
+			    <p:spacer height="50" />
+			    
+			    <center>  
+			      
+				    <p:fieldset style="width: 800px;">
+				         
+				         <p:commandButton id="incluir" action="#{categoriaBean.incluirCategoria()}" rendered="#{categoriaBean.exibeInsert}" value="Incluir" update=":formCategoria"/>
+				         <p:spacer width="10px" />
+				         <p:commandButton id="alterar" action="#{categoriaBean.alterarCategoria()}" rendered="#{categoriaBean.exibeUpdate}" value="Alterar" update=":formCategoria"/>
+				         <p:spacer width="10px" />
+				         <p:commandButton id="excluir" action="#{categoriaBean.excluirCategoria()}" rendered="#{categoriaBean.exibeDelete}" value="Excluir" update=":formCategoria"/>
+				         <p:spacer width="10px" />
+				         <p:commandButton value="Voltar Menu" action="#{menuBean.retornaMenu()}" />
+				         
+				    </p:fieldset>
+			    
+			    </center>
+			    
+			    <br />
+			    <br /> 
+			      
+			</h:form>
+	</ui:define>
+</ui:composition>

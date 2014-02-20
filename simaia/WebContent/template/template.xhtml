@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+		      	xmlns:h="http://java.sun.com/jsf/html"
+		      	xmlns:f="http://java.sun.com/jsf/core"
+		      	xmlns:p="http://primefaces.org/ui" 
+		      	xmlns:ui="http://java.sun.com/jsf/facelets"> 
+    <f:view>
+	<h:head>
+		<meta http-equiv="X-UA-Compatible" content="IE=7"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+     	<meta http-equiv="Pragma" content="no-cache" />
+     	<meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
+        <meta http-equiv="Cache" content="no-cache" />
+        <meta http-equiv="Expires" content="-1" />
+        <meta http-equiv="language" content="pt-br" />
+        <meta http-equiv="description" content="Simaia - Controle Pessoal." />
+        <meta http-equiv="keywords" content="Simaia - Controle Pessoal." />
+        <link rel="stylesheet" type="text/css" href="resources/css/style.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/style.css"/>  
+		
+		<ui:insert name="titulo"/>
+		
+    	<title>Simaia - Controle Pessoal.</title>
+    	
+		
+		<script language='JavaScript'>
+			 
+			function soNums(e){
+			 
+			    //teclas adicionais permitidas (tab,delete,backspace,setas direita e esquerda)
+			    keyCodesPermitidos = new Array(8,9,37,39,46);
+			     
+			    //numeros e 0 a 9 do teclado alfanumerico
+			    for(x=48;x &lt;=57;x++){
+			        keyCodesPermitidos.push(x);
+			    }
+			     
+			    //numeros e 0 a 9 do teclado numerico
+			    for(x=96;x &lt;=105;x++){
+			        keyCodesPermitidos.push(x);
+			    }
+			     
+			    //Pega a tecla digitada
+			    keyCode = e.which;
+			     
+			    //Verifica se a tecla digitada é permitida
+			    if ($.inArray(keyCode,keyCodesPermitidos) != -1){
+			        return true;
+			    }   
+			    return false;
+			}
+
+			
+			function MascaraMoeda(objTextBox, SeparadorMilesimo, SeparadorDecimal, e){
+			    var sep = 0;
+			    var key = "";
+			    var i = j = 0;
+			    var len = len2 = 0;
+			    var strCheck = '0123456789';
+			    var aux = aux2 = '';
+			    var whichCode = (window.Event) ? e.which : e.keyCode;
+			    if (whichCode == 13) return true;
+			    key = String.fromCharCode(whichCode); // Valor para o código da Chave
+			    if (strCheck.indexOf(key) == -1) return false; // Chave inválida
+			    len = objTextBox.value.length;
+			    for(i = 0; i &lt; len; i++)
+			        if ((objTextBox.value.charAt(i) != '0') &amp;&amp; (objTextBox.value.charAt(i) != SeparadorDecimal)) break;
+			    aux = '';
+			    for(; i &lt; len; i++)
+			        if (strCheck.indexOf(objTextBox.value.charAt(i))!=-1) aux += objTextBox.value.charAt(i);
+			    aux += key;
+			    len = aux.length;
+			    if (len == 0) objTextBox.value = "";
+			    if (len == 1) objTextBox.value = "0"+ SeparadorDecimal + "0" + aux;
+			    if (len == 2) objTextBox.value = "0"+ SeparadorDecimal + aux;
+			    if (len &gt; 2) {
+			        aux2 = "";
+			        for (j = 0, i = len - 3; i &gt;= 0; i--) {
+			            if (j == 3) {
+			                aux2 += SeparadorMilesimo;
+			                j = 0;
+			            }
+			            aux2 += aux.charAt(i);
+			            j++;
+			        }
+			        objTextBox.value = "R$ ";
+			        len2 = aux2.length;
+			        for (i = len2 - 1; i &gt;= 0; i--)
+			        objTextBox.value += aux2.charAt(i);
+			        objTextBox.value += SeparadorDecimal + aux.substr(len - 2, len);
+			    }
+			    return false;
+			}
+		</script>  
+			
+		 
+		
+    	<ui:insert name="head" />
+	</h:head>
+
+	<h:body>
+        <ui:insert name="cabecalho">
+      		<ui:include src="./cabecalho.xhtml" />
+    	</ui:insert>    	
+    	
+    	<div style="display:none;"></div>
+
+    <!-- #content -->
+    <div id="content">
+        <!--.wrapper -->
+        <div class="wrapper">
+      <ui:insert name="conteudo" />      
+       
+        </div>
+    </div>
+    <div class="clearer"></div>
+    	
+    	
+	    <ui:insert name="rodape">
+      		<ui:include src="./rodape.xhtml" />
+    	</ui:insert>
+    	
+	</h:body> 
+	
+	</f:view>
+</ui:composition>

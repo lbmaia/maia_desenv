@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      			xmlns:h="http://java.sun.com/jsf/html"
+      			xmlns:f="http://java.sun.com/jsf/core"
+      			xmlns:ui="http://java.sun.com/jsf/facelets"
+      			xmlns:p="http://primefaces.org/ui" 
+      			template="/template/template.xhtml" > 
+
+
+	<ui:define name="conteudo">
+	
+	        <h:form id="formDespesa">
+	        
+	             <p:spacer height="50" />
+ 			    
+ 			    <center>
+ 			        
+ 			        <p:messages id="mensagens" showDetail="false" autoUpdate="true" closable="true" />
+ 			        
+ 			        <p:fieldset style="width: 800px;">
+ 			             <h1 style="color : #2A649E;">Pagamento de Despesas</h1>
+ 			        </p:fieldset>
+ 			        <br />
+ 			        <br />
+				    <p:fieldset style="width: 800px;">
+				     
+				        		<p:outputLabel for="idDescricaoDespesa" value="Descrição Despesa:"/>  
+				        		<p:spacer height="10px" />
+						        <p:inputText id="idDescricaoDespesa" value="#{despesaBean.nomeDespesa}" title="Informe a descrição da despesa" maxlength="100" size="60"/>
+						        <br /> 
+						        <br /> 
+						        <p:outputLabel for="combocategoria" value="Categoria:" /><br /><br />
+					
+					            <p:selectOneMenu id="combocategoria" value="#{despesaBean.idCategoria}">  
+							            <f:selectItem itemLabel="Selecione uma categoria" itemValue="0" />  
+							            <f:selectItems value="#{despesaBean.categorias}" var="categoria" itemLabel="#{categoria.nomeCategoria}" itemValue="#{categoria.id}"/>   
+					            </p:selectOneMenu>
+	                            <p:spacer height="10px"/>
+	                            <br />
+	                            <br />
+	                            <p:outputLabel for="mes" value="Mes:"/>  
+				        		<p:spacer height="10px" />
+						        <p:inputText id="mes" value="#{despesaBean.mes}" title="Informe o mês (MM)" maxlength="2" size="2"/>
+						        <p:spacer height="10px"/>
+						        <p:outputLabel for="ano" value="Ano:"/>  
+				        		<p:spacer height="10px" />
+						        <p:inputText id="ano" value="#{despesaBean.ano}" title="Informe a ano (YYYY)" maxlength="4" size="4"/>
+	                            
+	                            <br />
+	                            <br />
+	                            <br />				            
+					            <p:commandButton action="#{despesaBean.consultarDespesa()}" update="formDespesa"  value="Pesquisar"/>
+					            <p:spacer width="10px" />
+					            <p:commandButton rendered="#{despesaBean.exibeBtPagar}" action="#{despesaBean.pagarDespesa()}" update=":formDespesa:parcelas"  value="Registrar Pagamento"/>
+					            <p:spacer rendered="#{despesaBean.exibeBtPagar}" width="10px" />
+					            <p:commandButton value="Voltar Menu" action="#{menuBean.retornaMenu()}" />
+					
+					      
+				    </p:fieldset>
+				    
+				    <br />
+				    
+				    <p:fieldset style="width: 800px;">
+				     
+				        <p:dataTable id="parcelas" var="parcela" paginator="true" rows="50" selection="#{despesaBean.selectedParcelas}" value="#{despesaBean.parcelasModel}">  
+					  
+					        <f:facet name="header">  
+					            Despesas  
+					        </f:facet>  
+					        
+					        <p:column disabledSelection="#{parcela.pago}" selectionMode="multiple" style="width:2%" />  
+					  
+					        <p:column headerText="Descricao" style="width:30%">  
+					              <h:outputText value="#{parcela.despesa.descricao}" />  
+					        </p:column>
+					        
+					        <p:column headerText="Valor" style="width:20%">  
+					              <h:outputText value="#{parcela.valor}" >
+					                 <f:convertNumber type="currency" maxFractionDigits="2" minFractionDigits="2" />
+					              </h:outputText>  
+					        </p:column>  
+					  
+					        <p:column headerText="Data Vencimento" style="width:20%">  
+					              <h:outputText value="#{parcela.dtVencimento}" >
+					                  <f:convertDateTime pattern="dd/MM/yyyy"  />
+					              </h:outputText>  
+					        </p:column>
+					        
+					        <p:column headerText="Status" style="width:20%">  
+					              <h:outputText rendered="#{parcela.pago}" value="Pago" />
+					        </p:column>    
+						     
+					        
+					    </p:dataTable>   
+				          
+				    </p:fieldset>
+			    
+			    </center>
+			    
+			    <p:spacer height="50" />
+			    
+	        
+	        
+	        </h:form>
+				
+	</ui:define>
+</ui:composition>

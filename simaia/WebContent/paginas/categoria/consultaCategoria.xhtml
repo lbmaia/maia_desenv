@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      			xmlns:h="http://java.sun.com/jsf/html"
+      			xmlns:f="http://java.sun.com/jsf/core"
+      			xmlns:ui="http://java.sun.com/jsf/facelets"
+      			xmlns:p="http://primefaces.org/ui" 
+      			template="/template/template.xhtml" > 
+
+
+	<ui:define name="conteudo">
+	
+	<h:form id="formCategoria">  
+ 			    
+ 			    <p:spacer height="50" />
+ 			    
+ 			    <center>
+ 			        
+ 			        <p:messages id="mensagens" showDetail="false" autoUpdate="true" closable="true" />
+ 			        
+ 			        <p:fieldset style="width: 800px;">
+ 			             <h1 style="color : #2A649E;">Consulta de Categorias</h1>
+ 			        </p:fieldset>
+ 			        <br />
+ 			        <br />
+				    <p:fieldset style="width: 800px;">
+				     
+				       <h:panelGrid columns="3">
+				               
+				               <h:panelGroup>
+				                   <p:outputLabel for="textConsulta" value="Nome da Categoria: " />    
+					           </h:panelGroup>
+
+					           <h:panelGroup>
+					               <p:spacer width="10px" />
+					               <p:inputText id="textConsulta" value="#{categoriaBean.categoria.nomeCategoria}"/>
+					               <p:spacer width="10px" />
+					           </h:panelGroup>
+					           
+					           <h:panelGroup>
+					                <p:commandButton value="Consultar" update=":formCategoria" action="#{categoriaBean.consultarCategoria()}" /> 
+					                
+					                <p:spacer width="10px" />
+					                <p:commandButton value="Voltar Menu" action="#{menuBean.retornaMenu()}" />
+					           </h:panelGroup>
+				           
+				           </h:panelGrid>
+				           
+				           <p:spacer height="50px" />
+			
+				           <p:dataTable rendered="#{!categoriaBean.listaVazia}" var="categoria" value="#{categoriaBean.categorias}" paginator="true" rows="10">  
+						        
+						        <p:column headerText="Cod. Categoria" style="width:10%; text-align: center;">  
+						            <h:outputText value="#{categoria.id}" />  
+						        </p:column>  
+						  
+						        <p:column headerText="Nome" style="width:80%">  
+						            <h:outputText value="#{categoria.nomeCategoria}" />  
+						        </p:column>  
+						  
+						       
+						        <p:column style="width:10%">  
+						           
+						           <p:commandButton action="#{categoriaBean.selecionaCategoria()}" icon="ui-icon-document" title="Editar" >
+						                <f:setPropertyActionListener target="#{categoriaBean.categoria}" value="#{categoria}"/>
+						           </p:commandButton>
+						       
+						        </p:column> 
+						  						          
+						    </p:dataTable>  
+				          
+				    </p:fieldset>
+			    
+			    </center>
+			    
+			    <p:spacer height="50" />
+			    
+			     
+			    <br />
+			    <br /> 
+			      
+			</h:form>
+				
+	</ui:define>
+</ui:composition>

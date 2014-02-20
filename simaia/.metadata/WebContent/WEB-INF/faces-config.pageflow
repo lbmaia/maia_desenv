@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf13928556020930" configfile="/simaia/WebContent/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="*" x="122" y="1906" id="pf13928556615781" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf13928556615792 pf13928556615793 pf13928556615794 pf13928556615795 pf13928556615796 pf13928556615797 pf13928556615798 pf13928556615799 pf139285566157910 pf139285566157911 pf139285566157912" path="*"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/login/efetuarLogin.jsf" x="338" y="178" id="pf139285566157913" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf13928556615792" path="/paginas/login/efetuarLogin.jsf"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/menu/menu.jsf" x="338" y="562" id="pf139285566157914" referenceLink="//@navigationRule.0/@navigationCase.1/@toViewId|" inlinks="pf13928556615793" path="/paginas/menu/menu.jsf"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/categoria/manterCategoria.jsf" x="338" y="946" id="pf139285566157915" referenceLink="//@navigationRule.0/@navigationCase.2/@toViewId|" inlinks="pf13928556615794" path="/paginas/categoria/manterCategoria.jsf"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/categoria/consultaCategoria.jsf" x="338" y="1330" id="pf139285566157916" referenceLink="//@navigationRule.0/@navigationCase.3/@toViewId|" inlinks="pf13928556615795" path="/paginas/categoria/consultaCategoria.jsf"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/despesa/manterDespesa.jsf" x="338" y="1714" id="pf139285566157917" referenceLink="//@navigationRule.0/@navigationCase.4/@toViewId|" inlinks="pf13928556615796" path="/paginas/despesa/manterDespesa.jsf"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/despesa/consultaDespesa.jsf" x="338" y="2098" id="pf139285566157918" referenceLink="//@navigationRule.0/@navigationCase.6/@toViewId|" inlinks="pf13928556615797" path="/paginas/despesa/consultaDespesa.jsf"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/despesa/consultaLimiteGastos.jsf" x="338" y="2482" id="pf139285566157919" referenceLink="//@navigationRule.0/@navigationCase.6/@toViewId|" inlinks="pf13928556615798" path="/paginas/despesa/consultaLimiteGastos.jsf"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/usuario/manterUsuario.jsf" x="338" y="2866" id="pf139285566157920" referenceLink="//@navigationRule.0/@navigationCase.7/@toViewId|" inlinks="pf13928556615799" path="/paginas/usuario/manterUsuario.jsf"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/usuario/consultaUsuario.jsf" x="338" y="3250" id="pf139285566158021" referenceLink="//@navigationRule.0/@navigationCase.8/@toViewId|" inlinks="pf139285566157910" path="/paginas/usuario/consultaUsuario.jsf"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/relatorio/relatorios.jsf" x="338" y="3634" id="pf139285566158022" referenceLink="//@navigationRule.0/@navigationCase.9/@toViewId|" inlinks="pf139285566157911" path="/paginas/relatorio/relatorios.jsf"/>
+  <nodes xsi:type="pageflow:PFPage" name="paginas/despesa/pagamentoDespesa.jsf" id="pf139285566158023" referenceLink="//@navigationRule.0/@navigationCase.6/@toViewId|" inlinks="pf139285566157912" path="/paginas/despesa/pagamentoDespesa.jsf"/>
+  <links id="pf13928556615792" target="pf139285566157913" source="pf13928556615781" outcome="login" redirect="true"/>
+  <links id="pf13928556615793" target="pf139285566157914" source="pf13928556615781" outcome="menu" redirect="true"/>
+  <links id="pf13928556615794" target="pf139285566157915" source="pf13928556615781" outcome="cadCategoria" redirect="true"/>
+  <links id="pf13928556615795" target="pf139285566157916" source="pf13928556615781" outcome="consultaCategoria" redirect="true"/>
+  <links id="pf13928556615796" target="pf139285566157917" source="pf13928556615781" outcome="cadDespesa" redirect="true"/>
+  <links id="pf13928556615797" target="pf139285566157918" source="pf13928556615781" outcome="consultaDespesa" redirect="true"/>
+  <links id="pf13928556615798" target="pf139285566157919" source="pf13928556615781" outcome="consultaLimites" redirect="true"/>
+  <links id="pf13928556615799" target="pf139285566157920" source="pf13928556615781" outcome="cadUsuario" redirect="true"/>
+  <links id="pf139285566157910" target="pf139285566158021" source="pf13928556615781" outcome="consultaUsuario" redirect="true"/>
+  <links id="pf139285566157911" target="pf139285566158022" source="pf13928556615781" outcome="relatorio" redirect="true"/>
+  <links id="pf139285566157912" target="pf139285566158023" source="pf13928556615781" outcome="pagarDespesa" redirect="true"/>
+</pageflow:Pageflow>

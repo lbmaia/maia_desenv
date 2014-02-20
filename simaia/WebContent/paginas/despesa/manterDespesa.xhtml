@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      			xmlns:h="http://java.sun.com/jsf/html"
+      			xmlns:f="http://java.sun.com/jsf/core"
+      			xmlns:ui="http://java.sun.com/jsf/facelets"
+      			xmlns:p="http://primefaces.org/ui" 
+      			template="/template/template.xhtml" > 
+
+
+	<ui:define name="conteudo">
+	
+	        <h:form id="formDespesa">
+	        
+	             <p:spacer height="50" />
+ 			    
+ 			    <center>
+ 			        
+ 			        <p:messages id="mensagens" showDetail="false" autoUpdate="true" closable="true" />
+ 			        
+ 			        <p:fieldset style="width: 800px;">
+ 			             <h1 style="color : #2A649E;">Cadastro de Despesas</h1>
+ 			        </p:fieldset>
+ 			        <br />
+ 			        <br />
+				    <p:fieldset style="width: 800px;">
+				     
+				        		<p:outputLabel for="idDescricaoDespesa" value="Descrição Despesa:"/>  
+				        		<p:spacer height="10px" />
+						        <p:inputText id="idDescricaoDespesa" value="#{despesaBean.despesa.descricao}" title="Informe a descrição da despesa" maxlength="100" size="60"/>
+						        <br /> 
+						        <br /> 
+						        <p:outputLabel for="combocategoria" value="Categoria:" /><br /><br />
+					
+					            <p:selectOneMenu id="combocategoria" value="#{despesaBean.despesa.categoria.id}">  
+							            <f:selectItem itemLabel="Selecione uma categoria" itemValue="0" />  
+							            <f:selectItems value="#{despesaBean.categorias}" var="categoria" itemLabel="#{categoria.nomeCategoria}" itemValue="#{categoria.id}"/>   
+					            </p:selectOneMenu>
+	                            <p:spacer height="10px"/>
+	                            <br />
+	                            <br />
+	                            <br />				            
+					            <p:commandButton oncomplete="PF('parcelaDialog').show()"  value="Incluir Parcelas"/>
+					
+					      
+				    </p:fieldset>
+				    
+				    <br />
+				    
+				    <p:fieldset style="width: 800px;">
+				     
+				        <p:dataTable id="parcelas" var="parcela" value="#{despesaBean.parcelas}" editable="true">  
+					  
+					        <f:facet name="header">  
+					            Parcelas  
+					        </f:facet>  
+					  
+					        <p:ajax event="rowEdit" listener="#{despesaBean.onEdit}" update=":formDespesa:parcelas" />  
+					        <p:ajax event="rowEditCancel" listener="#{despesaBean.onCancel}" update=":formDespesa:parcelas" />  
+					  
+					        <p:column headerText="Valor" style="width:30%">  
+					            <p:cellEditor>  
+					                <f:facet name="output">  
+					                    <h:outputText value="#{parcela.valor}" >
+					                       <f:convertNumber type="currency" maxFractionDigits="2" minFractionDigits="2" />
+					                    </h:outputText>  
+					                </f:facet>  
+					                <f:facet name="input">  
+					                    <p:inputText value="#{parcela.valor}" onkeypress="return(MascaraMoeda(this,'.',',',event))" style="width:100%">
+					                       <f:convertNumber type="currency" maxFractionDigits="2" minFractionDigits="2" />
+					                    </p:inputText>  
+					                </f:facet>  
+					            </p:cellEditor>  
+					        </p:column>  
+					  
+					        <p:column headerText="Valor Pago" style="width:30%">  
+					            <p:cellEditor>  
+					                <f:facet name="output">  
+					                    <h:outputText value="#{parcela.valorPago}" >
+					                        <f:convertNumber type="currency" maxFractionDigits="2" minFractionDigits="2" />
+					                    </h:outputText>  
+					                </f:facet>  
+					                <f:facet name="input">  
+					                    <p:inputText value="#{parcela.valorPago}" onkeypress="return(MascaraMoeda(this,'.',',',event))" style="width:100%" >
+					                        <f:convertNumber type="currency" maxFractionDigits="2" minFractionDigits="2" />
+					                    </p:inputText>  
+					                </f:facet>  
+					            </p:cellEditor>  
+					        </p:column>  
+					  
+					        <p:column headerText="Dt Vencimento" style="width:15%">  
+					            <p:cellEditor>  
+					                <f:facet name="output">  
+					                    <h:outputText value="#{parcela.dtVencimento}" >
+					                        <f:convertDateTime pattern="dd/MM/yyyy"  />
+					                        </h:outputText>  
+					                </f:facet>  
+					                <f:facet name="input">
+					                    <p:calendar size="10" value="#{parcela.dtVencimento}" style="width:100%" />  
+					                </f:facet>    
+					            </p:cellEditor>  
+					        </p:column>  
+					  
+					        <p:column headerText="Dt Pagamento" style="width:15%">  
+					            <p:cellEditor>  
+					                <f:facet name="output">  
+					                    <h:outputText value="#{parcela.dtPagamento}" >
+					                    <f:convertDateTime pattern="dd/MM/yyyy"  />
+					                    </h:outputText>  
+					                </f:facet>  
+					                <f:facet name="input">
+					                    <p:calendar size="10" value="#{parcela.dtPagamento}" style="width:100%" />  
+					                </f:facet>  
+					            </p:cellEditor>  
+					        </p:column>
+					        
+					        <p:column style="width:5%">  
+					            <p:cellEditor>  
+					                <f:facet name="output">  
+					                    <h:outputText value="#{parcela.numParcela}" />  
+					                </f:facet>  
+					                <f:facet name="input">  
+					                    <p:inputText size="2" value="#{parcela.numParcela}" style="width:100%" />  
+					                </f:facet>  
+					            </p:cellEditor>  
+					        </p:column>
+					        
+					        <p:column style="width:5%">  
+					            <p:cellEditor>  
+					                <f:facet name="output">  
+					                    <h:outputText value="#{parcela.qtdParcelas}" />  
+					                </f:facet>  
+					                <f:facet name="input">  
+					                    <p:inputText size="2"  value="#{parcela.qtdParcelas}" style="width:100%" />  
+					                </f:facet>  
+					            </p:cellEditor>  
+					        </p:column>  
+					  
+					        <p:column style="width:6%">  
+					            <p:rowEditor  />  
+					        </p:column>
+					        
+					        <p:column style="width:4%">  
+				                <p:commandButton id="selectButton" action="#{despesaBean.excluirParcela()}" update=":formDespesa" icon="ui-icon-close" title="excluir">  
+				                    <f:setPropertyActionListener value="#{parcela}" target="#{despesaBean.parcela}" />  
+				                </p:commandButton>
+					        </p:column>
+					  
+					    </p:dataTable>   
+				          
+				    </p:fieldset>
+			    
+			    </center>
+			    
+			    <p:spacer height="50" />
+			    
+			    <center>  
+			      
+				    <p:fieldset style="width: 800px;">
+				         
+				         <p:commandButton id="incluir" action="#{despesaBean.incluirDespesa()}" rendered="#{despesaBean.exibeInsert}" value="Incluir" update=":formDespesa"/>
+				         <p:spacer width="10px" />
+				         <p:commandButton id="alterar" action="#{despesaBean.alterarDespesa()}" rendered="#{despesaBean.exibeUpdate}" value="Alterar" update=":formDespesa"/>
+				         <p:spacer width="10px" />
+				         <p:commandButton id="excluir" action="#{despesaBean.excluirDespesa()}" rendered="#{despesaBean.exibeDelete}" value="Excluir" update=":formDespesa"/>
+				         <p:spacer width="10px" />
+				         <p:commandButton value="Voltar Menu" action="#{menuBean.retornaMenu()}" />
+				         
+				    </p:fieldset>
+			    
+			    </center>
+			    
+			    <br />
+			    <br /> 
+			    
+			    <p:dialog header="Inclusão de Parcelas" widgetVar="parcelaDialog" resizable="false"  
+              width="400" showEffect="clip" hideEffect="fold" id="dialog">  
+  
+			        <h:panelGrid id="display" columns="2" cellpadding="4">  
+			  
+			            <h:outputText rendered="#{despesaBean.exibeDados}" value="Valor:" />  
+			            <h:inputText rendered="#{despesaBean.exibeDados}" value="#{despesaBean.valor}" style="font-weight:bold"/> 
+			            
+			            <h:outputText value="Quantidade de Parcelas a Incluir:" />  
+			            <h:inputText value="#{despesaBean.numParcelas}" style="font-weight:bold"/>  
+			            
+			            <h:outputText rendered="#{despesaBean.exibeDados}" value="Data Vencimento:" />  
+			            <p:calendar rendered="#{despesaBean.exibeDados}" value="#{despesaBean.dataVencimento}" />
+			            <br/>
+			            <br/>
+			            <br/>  
+			            <center>
+		                <p:commandButton id="Incluir" action="#{despesaBean.incluirParcelas()}"  value="Incluir Parcelas" update=":formDespesa"/>		            
+			            </center>  
+			        </h:panelGrid>  
+			    </p:dialog>
+	        
+	        
+	        </h:form>
+				
+	</ui:define>
+</ui:composition>
