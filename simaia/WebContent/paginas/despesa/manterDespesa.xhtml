@@ -18,12 +18,12 @@
  			        
  			        <p:messages id="mensagens" showDetail="false" autoUpdate="true" closable="true" />
  			        
- 			        <p:fieldset style="width: 800px;">
+ 			        <p:fieldset style="width: 900px;">
  			             <h1 style="color : #2A649E;">Cadastro de Despesas</h1>
  			        </p:fieldset>
  			        <br />
  			        <br />
-				    <p:fieldset style="width: 800px;">
+				    <p:fieldset style="width: 900px;">
 				     
 				        		<p:outputLabel for="idDescricaoDespesa" value="Descrição Despesa:"/>  
 				        		<p:spacer height="10px" />
@@ -47,7 +47,7 @@
 				    
 				    <br />
 				    
-				    <p:fieldset style="width: 800px;">
+				    <p:fieldset style="width: 900px;">
 				     
 				        <p:dataTable id="parcelas" var="parcela" value="#{despesaBean.parcelas}" editable="true">  
 					  
@@ -145,6 +145,24 @@
 				                    <f:setPropertyActionListener value="#{parcela}" target="#{despesaBean.parcela}" />  
 				                </p:commandButton>
 					        </p:column>
+					        
+					        <p:column style="width:4%">  
+				                
+				                <p:commandButton action="#{despesaBean.upLoadComprovante()}" oncomplete="PF('comprovanteDialog').show()"  icon="ui-icon-note" title="Upload de Comprovante">
+				                    <f:setPropertyActionListener value="#{parcela}" target="#{despesaBean.parcela}" />
+							    </p:commandButton> 
+							    
+							    </p:column>
+
+                             <p:column style="width:4%">  
+				                
+				                <p:commandButton action="#{despesaBean.upLoadComprovante()}" rendered="#{parcela.habilitaDownload}" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);"  icon="ui-icon-folder-open" title="Download Comprovante">
+				                    <f:setPropertyActionListener value="#{parcela}" target="#{despesaBean.parcela}" />
+                                    <p:fileDownload value="#{despesaBean.fileDownload}"  /> 							    
+							    </p:commandButton> 
+							    
+							 </p:column>
+
 					  
 					    </p:dataTable>   
 				          
@@ -156,7 +174,7 @@
 			    
 			    <center>  
 			      
-				    <p:fieldset style="width: 800px;">
+				    <p:fieldset style="width: 900px;">
 				         
 				         <p:commandButton id="incluir" action="#{despesaBean.incluirDespesa()}" rendered="#{despesaBean.exibeInsert}" value="Incluir" update=":formDespesa"/>
 				         <p:spacer width="10px" />
@@ -194,9 +212,29 @@
 			            </center>  
 			        </h:panelGrid>  
 			    </p:dialog>
-	        
+			    
+			    
 	        
 	        </h:form>
+				
+			<h:form enctype="multipart/form-data">
+			
+			   <p:dialog header="Comprovante" widgetVar="comprovanteDialog" resizable="false" width="500" showEffect="clip" hideEffect="fold" id="dialogComprovante">  
+  
+			 			<center>
+		                   
+		                    <p:fileUpload fileUploadListener="#{despesaBean.fileUploadAction}" mode="advanced" dragDropSupport="true"
+                                     auto="true" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+ 
+                             
+						    
+						    
+		                   		            
+			            </center>  
+			 
+			    </p:dialog>
+			   
+			</h:form>	
 				
 	</ui:define>
 </ui:composition>

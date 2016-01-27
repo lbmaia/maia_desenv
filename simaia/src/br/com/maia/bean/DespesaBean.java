@@ -1,5 +1,8 @@
 package br.com.maia.bean;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -9,10 +12,17 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
+import org.apache.commons.io.IOUtils;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.RowEditEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
 
 import br.com.maia.datamodel.ParcelaDataModel;
 import br.com.maia.entidade.Categoria;
@@ -58,7 +68,7 @@ public class DespesaBean implements Serializable {
 	private Integer idCategoria;
 	private Parcela[] selectedParcelas;
 	private boolean exibeBtPagar;
-	
+	private StreamedContent file;
 	
 	@PostConstruct
 	public void init(){
@@ -400,6 +410,10 @@ public class DespesaBean implements Serializable {
 		
 		return parcelas.isEmpty();
 	}
+    
+    public String upLoadComprovante(){
+    	return null;
+    }
 
 	private void limpaForm(){
     	
@@ -527,5 +541,48 @@ public class DespesaBean implements Serializable {
 		this.exibeBtPagar = exibeBtPagar;
 	}
 	
-
+	public boolean getUploadComprovante(){
+    	
+    	if(parcela == null || parcela.getComprovante() == null){
+    		return Boolean.TRUE;
+    	}else{
+    		return Boolean.FALSE;
+    	}
+    }
+    
+    public boolean getDownloadComprovante(){
+    	
+    	if(parcela == null || parcela.getComprovante() == null){
+    		return Boolean.FALSE;
+    	}else{
+    		return Boolean.TRUE;
+    	}
+    }
+    
+    public void fileUploadAction(FileUploadEvent event) throws IOException {
+        try {
+            UploadedFile arq = event.getFile();
+            
+            InputStream is = arq.getInputstream();
+            
+            parcela.setComprovante(IOUtils.toByteArray(is));
+            
+            is.close();
+            
+            Util.addInfo("Arquivo "+ event.getFile().getFileName() + " enviado com sucesso!");
+            
+            
+        } catch (Exception e) {
+        	Util.addError(e.getMessage());
+        }
+    }
+    
+    public StreamedContent getFileDownload() {
+        
+    	InputStream myInputStream = new ByteArrayInputStream(parcela.getComprovante()); 
+        file = new DefaultStreamedContent(myInputStream, "image/jpg", "comprovante.jpg");
+    	
+    	return file;
+    }
+	   
 }

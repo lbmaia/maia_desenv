@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="parcela")
@@ -56,6 +57,18 @@ public class Parcela implements Serializable {
 	@Column(name="anoDespesa", nullable=false)
 	private Integer anoDespesa;
 
+	@Column(name="comprovante", nullable=true)
+	private byte [] comprovante;
+	
+	@Transient
+	public boolean isHabilitaDownload(){
+		if(comprovante != null){
+			return Boolean.TRUE;
+		}else{
+			return Boolean.FALSE;
+		}
+	}
+	
 	public Integer getIdParcela() {
 		return idParcela;
 	}
@@ -151,6 +164,14 @@ public class Parcela implements Serializable {
 	public boolean isPago(){
 		return dtPagamento != null && valorPago != null ? Boolean.TRUE : Boolean.FALSE;
 				
+	}
+
+	public byte [] getComprovante() {
+		return comprovante;
+	}
+
+	public void setComprovante(byte [] comprovante) {
+		this.comprovante = comprovante;
 	}
 
 }
