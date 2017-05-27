@@ -11,6 +11,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 import br.com.maia.entidade.Categoria;
 import br.com.maia.util.PoolString;
@@ -20,6 +28,7 @@ import br.com.maia.util.PoolString;
  */
 @Stateless(mappedName = "CategoriaServiceBean")
 @LocalBean
+@Path("/categoria")
 public class CategoriaServiceBean implements Serializable {
 	
    /**
@@ -36,19 +45,19 @@ public class CategoriaServiceBean implements Serializable {
     * Metodo responsavel por incluir um Categoria na base 
  * @param Categoria
  */
+  @PUT
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/manter")
   public void incluirCategoria(Categoria categoria){
 	   
 	   try{
 		   
 		   if(permiteInclusaoCategoria(categoria)){
-			   Categoria entCategoria = new Categoria();
-			   entCategoria.setNomeCategoria(categoria.getNomeCategoria());
-			   session.persist(entCategoria);  
+			   session.persist(categoria);
 		   }else{
 			   throw new EJBException(PoolString.CATEGORIA_JA_CADASTRADA);
 		   }
-		   
-		   
 		   
 	   }catch(Exception e){
 		   throw new EJBException(e);
@@ -60,26 +69,16 @@ public class CategoriaServiceBean implements Serializable {
     * Metodo responsavel por alterar uma Categoria na base de dados
  * @param categoria
  */
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/manter")
   public void alterarCategoria(Categoria categoria){
 	   
 	   try{
 		   
-		   Categoria entCategoria = session.find(Categoria.class, categoria.getId());
-		   
-		   if(entCategoria != null){
-			   
-			   if(permiteInclusaoCategoria(categoria)){
-				   entCategoria.setNomeCategoria(categoria.getNomeCategoria());
-				   session.merge(entCategoria);
-			   }else{
-				   throw new EJBException(PoolString.CATEGORIA_JA_CADASTRADA);
-			   }
-			   
-			     
-		   }else{
-			   throw new Exception(PoolString.CATEGORIA_NAO_LOCALIZADA);
-		   }
-		   
+	     session.merge(categoria);
+		   		   
 	   }catch(Exception e){
 		   throw new EJBException(e);
 	   }
@@ -89,7 +88,11 @@ public class CategoriaServiceBean implements Serializable {
    * Metodo responsavel por excluir uma Categoria
  * @param idCategoria
  */
-   public void excluirCategoria(Integer idCategoria){
+   @DELETE
+   @Consumes(MediaType.APPLICATION_JSON)
+   @Produces(MediaType.APPLICATION_JSON)
+   @Path("/manter/{categoria}")
+   public void excluirCategoria(@PathParam("categoria")Integer idCategoria){
 	   
 	   try{
 		   
@@ -116,12 +119,16 @@ public class CategoriaServiceBean implements Serializable {
     * Metodo responsavel por retornar uma lista e Categorias
   * @return
   */
+   @POST
+   @Consumes(MediaType.APPLICATION_JSON)
+   @Produces(MediaType.APPLICATION_JSON)
+   @Path("/consultar/{categoria}")
    @SuppressWarnings("unchecked")
-   public List<Categoria> consultaCategorias(String nomeCategoria){
+   public List<Categoria> consultaCategorias(@PathParam("categoria")String nomeCategoria){
 	   
 	   StringBuilder sb = new StringBuilder(" from Categoria u  ");
 	   
-	   if( nomeCategoria != null && !"".equals(nomeCategoria.trim())){
+	   if( nomeCategoria != null && !"".equals(nomeCategoria.trim()) && !"all".equals(nomeCategoria.trim())){
 		   sb.append(" where u.nomeCategoria like :nomeCategoria ");
 	   }
 	   
@@ -129,7 +136,7 @@ public class CategoriaServiceBean implements Serializable {
 	   
 	   Query query = session.createQuery(sb.toString());
 	   
-	   if(nomeCategoria != null && !"".equals(nomeCategoria.trim())){
+	   if(nomeCategoria != null && !"".equals(nomeCategoria.trim()) && !"all".equals(nomeCategoria.trim())){
 		   query.setParameter("nomeCategoria", "%"+nomeCategoria+"%");
 	   }
 	   
@@ -170,6 +177,6 @@ public class CategoriaServiceBean implements Serializable {
 	    }
 	    
 		
-	}
+	}	
 
 }

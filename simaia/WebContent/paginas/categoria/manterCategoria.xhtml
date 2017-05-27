@@ -24,11 +24,15 @@
  			        <br />
 				    <p:fieldset style="width: 800px;">
 				     
-				        <h:panelGrid columns="3" cellpadding="5" width="800px">
+				        <h:panelGrid columns="2" cellpadding="5" width="800px">
 				    
 				             	<p:outputLabel for="idNomeCategoria" value="Nome Categoria:"/>  
 						        <p:inputText id="idNomeCategoria" value="#{categoriaBean.categoria.nomeCategoria}" title="Informe o nome da Categoria" maxlength="30" size="30"/>
-						        <p:tooltip for="idNomeCategoria" showEvent="focus" hideEvent="blur" />  
+						        <p:outputLabel for="limiteCategoria" value="Limite Categoria:"/> 
+					            <p:inputText id="limiteCategoria" value="#{categoriaBean.categoria.limiteCategoria}" onkeypress="return(MascaraMoeda(this,'.',',',event))" size="15" >
+				                   <f:convertNumber type="currency" maxFractionDigits="2" minFractionDigits="2" />
+				                </p:inputText> 
+						    
 						        
 				        </h:panelGrid>
 				          

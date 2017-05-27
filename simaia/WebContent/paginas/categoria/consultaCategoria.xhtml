@@ -54,11 +54,16 @@
 						            <h:outputText value="#{categoria.id}" />  
 						        </p:column>  
 						  
-						        <p:column headerText="Nome" style="width:80%">  
+						        <p:column headerText="Nome" style="width:60%">  
 						            <h:outputText value="#{categoria.nomeCategoria}" />  
-						        </p:column>  
-						  
-						       
+						        </p:column>
+						        
+						        <p:column headerText="Valor Limite" style="width:30%">  
+						            <h:outputText value="#{categoria.limiteCategoria}" >
+					                    <f:convertNumber type="currency" maxFractionDigits="2" minFractionDigits="2" />
+					                </h:outputText>  
+						        </p:column>
+						             
 						        <p:column style="width:10%">  
 						           
 						           <p:commandButton action="#{categoriaBean.selecionaCategoria()}" icon="ui-icon-document" title="Editar" >

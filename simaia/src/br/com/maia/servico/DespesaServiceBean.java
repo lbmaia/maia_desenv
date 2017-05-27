@@ -7,19 +7,32 @@ import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJBException;
+import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 import br.com.maia.entidade.Despesa;
 import br.com.maia.entidade.Gasto;
 import br.com.maia.entidade.GastoCategoria;
 import br.com.maia.entidade.Limite;
 import br.com.maia.entidade.Parcela;
+import br.com.maia.servico.parametros.ConsultaDespesasParameter;
 import br.com.maia.util.PoolString;
 
 @Stateless(mappedName="DespesaServiceBean")
+@Path("/despesa")
+@LocalBean
 public class DespesaServiceBean implements Serializable{
 
 	
@@ -33,11 +46,15 @@ public class DespesaServiceBean implements Serializable{
 	
 	/**
 	 * Metodo responsavel por consultar despesas por descricao
-	 * @param descricao
+	 * @param parameterObject TODO
 	 * @return List<DespesaDTO>
 	 */
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/consultar")
 	@SuppressWarnings("unchecked")
-	public List<Parcela> consultaDespesas(String descricao, Integer idCategoria, Integer mes, Integer ano){
+	public List<Parcela> consultaDespesas(ConsultaDespesasParameter parameterObject){
 		
 		try{
 			
@@ -45,12 +62,12 @@ public class DespesaServiceBean implements Serializable{
 			
 			StringBuilder sb = new StringBuilder("from Parcela p ");
 			
-			if(descricao != null && !"".equals(descricao.trim())){
+			if(parameterObject.getDescricao() != null && !"".equals(parameterObject.getDescricao().trim())){
 				sb.append(" where p.despesa.descricao like :descricao ");
 				temWhere = Boolean.TRUE;
 			}
 			
-			if(idCategoria != null && idCategoria.intValue() > 0){
+			if(parameterObject.getIdCategoria() != null && parameterObject.getIdCategoria().intValue() > 0){
 				
 				if(temWhere){
 					sb.append(" and ");
@@ -62,7 +79,7 @@ public class DespesaServiceBean implements Serializable{
 				temWhere = Boolean.TRUE;
 			}
 			
-			if(mes != null && mes.intValue() > 0){
+			if(parameterObject.getMes() != null && parameterObject.getMes().intValue() > 0){
 				
 				if(temWhere){
 					sb.append(" and ");
@@ -75,7 +92,7 @@ public class DespesaServiceBean implements Serializable{
 			}
 			
 				
-			if(ano != null && ano.intValue() > 0){
+			if(parameterObject.getAno() != null && parameterObject.getAno().intValue() > 0){
 				
 				if(temWhere){
 					sb.append(" and ");
@@ -91,20 +108,20 @@ public class DespesaServiceBean implements Serializable{
 			
 			Query query = session.createQuery(sb.toString());
 			   
-		    if(descricao != null && !"".equals(descricao.trim())){
-			   query.setParameter("descricao", "%"+descricao+"%");
+		    if(parameterObject.getDescricao() != null && !"".equals(parameterObject.getDescricao().trim())){
+			   query.setParameter("descricao", "%"+parameterObject.getDescricao()+"%");
 		    }
 		    
-		    if(idCategoria != null && idCategoria.intValue() > 0){
-			   query.setParameter("idCategoria", idCategoria);
+		    if(parameterObject.getIdCategoria() != null && parameterObject.getIdCategoria().intValue() > 0){
+			   query.setParameter("idCategoria", parameterObject.getIdCategoria());
 		    }
 		    
-		    if(mes != null && mes.intValue() > 0){
-			   query.setParameter("mes", mes);
+		    if(parameterObject.getMes() != null && parameterObject.getMes().intValue() > 0){
+			   query.setParameter("mes", parameterObject.getMes());
 		    }
 		    
-		    if(ano != null && ano.intValue() > 0){
-			   query.setParameter("ano", ano);
+		    if(parameterObject.getAno() != null && parameterObject.getAno().intValue() > 0){
+			   query.setParameter("ano", parameterObject.getAno());
 		    }
 		    
 		    List<Parcela> despesas = query.getResultList();
@@ -151,8 +168,12 @@ public class DespesaServiceBean implements Serializable{
      * @param dataFinal
      * @return List<DespesaDTO>
      */
-    @SuppressWarnings("unchecked")
-	public List<Parcela> consultaDespesasPeriodo(Date dataIncial, Date dataFinal){
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/consultar/{inicio}/{fim}")
+	@SuppressWarnings("unchecked")
+	public List<Parcela> consultaDespesasPeriodo(@PathParam("inicio")Date dataIncial, @PathParam("fim")Date dataFinal){
 		
         try{
         	
@@ -178,7 +199,11 @@ public class DespesaServiceBean implements Serializable{
      * @return List<GastoDTO>
      */
     @SuppressWarnings("unchecked")
-	public List<Gasto> consultaGastosIntervaloAnual(Integer anoInicial, Integer anoFinal){
+    @POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/consultargastos/{inicio}/{fim}")
+	public List<Gasto> consultaGastosIntervaloAnual(@PathParam("inicio")Integer anoInicial, @PathParam("fim")Integer anoFinal){
     	
     	List<Gasto> gastoAnual = new ArrayList<Gasto>();
     	StringBuilder sb = new StringBuilder("select new br.com.maia.entidade.Gasto(p.anoDespesa, sum(p.valor)) from Parcela p  ");
@@ -233,7 +258,11 @@ public class DespesaServiceBean implements Serializable{
      * 
      */
     @SuppressWarnings("unchecked")
-	public List<Gasto> consultaGastosIntervaloMensal(Integer anoInicial, Integer anoFinal, Integer mesInicial, Integer mesFinal){
+    @POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/consultargastos/{inicio}/{fim}/{mesinicio}/{mesfim}")
+	public List<Gasto> consultaGastosIntervaloMensal(@PathParam("inicio")Integer anoInicial, @PathParam("fim")Integer anoFinal, @PathParam("mesinicio")Integer mesInicial, @PathParam("mesfim")Integer mesFinal){
     	
     	List<Gasto> gastoAnual = new ArrayList<Gasto>();
     	
@@ -291,7 +320,11 @@ public class DespesaServiceBean implements Serializable{
      * @return List<GastoDTO>
      */
     @SuppressWarnings("unchecked")
-	public List<GastoCategoria> consultaGastosCategoriaIntervaloAnual(Integer idCategoria, Integer anoInicial, Integer anoFinal){
+    @POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/consultargastos/{categoria}/{inicio}/{fim}")
+	public List<GastoCategoria> consultaGastosCategoriaIntervaloAnual(@PathParam("categoria")Integer idCategoria, @PathParam("inicio")Integer anoInicial, @PathParam("fim")Integer anoFinal){
     	
     	List<GastoCategoria> gastoAnual = new ArrayList<GastoCategoria>();
     	
@@ -359,7 +392,11 @@ public class DespesaServiceBean implements Serializable{
      * 
      */
     @SuppressWarnings("unchecked")
-	public List<GastoCategoria> consultaGastosCategoriaIntervaloMensal(Integer idCategoria, Integer anoInicial, Integer anoFinal, Integer mesInicial, Integer mesFinal){
+    @POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/consultargastos/{categoria}/{inicio}/{fim}/{mesinicio}/{mesfim}")
+	public List<GastoCategoria> consultaGastosCategoriaIntervaloMensal(@PathParam("categoria")Integer idCategoria, @PathParam("inicio")Integer anoInicial, @PathParam("fim")Integer anoFinal, @PathParam("mesinicio")Integer mesInicial, @PathParam("mesfim")Integer mesFinal){
     	
        List<GastoCategoria> gastoAnual = new ArrayList<GastoCategoria>();
     	
@@ -430,7 +467,11 @@ public class DespesaServiceBean implements Serializable{
      * 
      */
     @SuppressWarnings("unchecked")
-	public List<GastoCategoria> consultaGastosCategoriaPorPeriodo(Date dataInicial, Date dataFinal){
+    @POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/consultargastoscategoria/{inicio}/{fim}")
+	public List<GastoCategoria> consultaGastosCategoriaPorPeriodo(@PathParam("inicio")Date dataInicial, @PathParam("fim")Date dataFinal){
     	
     	List<GastoCategoria> gastoAnual = new ArrayList<GastoCategoria>();
     	
@@ -488,7 +529,11 @@ public class DespesaServiceBean implements Serializable{
      * 
      */
     @SuppressWarnings("unchecked")
-	public List<GastoCategoria> consultaGastosCategoriaPorPeriodo(Integer mes, Integer ano){
+    @POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/consultargastoscategoriames/{inicio}/{fim}")
+	public List<GastoCategoria> consultaGastosCategoriaPorPeriodo(@PathParam("inicio")Integer mes, @PathParam("fim")Integer ano){
     	
     	List<GastoCategoria> gastoAnual = new ArrayList<GastoCategoria>();
     	
@@ -529,7 +574,9 @@ public class DespesaServiceBean implements Serializable{
     }
 
     
-    
+    @PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/manter")
     public void incluirDespesa (Despesa despesa){
 		
 		try{
@@ -542,7 +589,10 @@ public class DespesaServiceBean implements Serializable{
 		
 	}
 	
-    
+    @POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/manter")
 	public void alterarDespesa (Despesa despesa){
 		
     	try{
@@ -557,6 +607,9 @@ public class DespesaServiceBean implements Serializable{
     	
 	}
 	
+    @POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/manterparcela")
     public void alterarParcela (Parcela parcela){
 		
     	try{
@@ -570,8 +623,10 @@ public class DespesaServiceBean implements Serializable{
     	
 	}
     
-   
-    public void excluirDespesa (Integer idDespesa){
+    @DELETE
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/excluirdespesa/{despesa}")
+    public void excluirDespesa (@PathParam("despesa")Integer idDespesa){
 		
     	try{
     		Despesa despesa = session.find(Despesa.class, idDespesa);
@@ -589,7 +644,10 @@ public class DespesaServiceBean implements Serializable{
     	
 	}
     
-    public void excluirParcela (Integer idParcela){
+    @DELETE
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/excruirparcela/{parcela}")
+    public void excluirParcela (@PathParam("parcela")Integer idParcela){
 		
     	try{
     		Parcela parcela = session.find(Parcela.class, idParcela);
@@ -608,6 +666,10 @@ public class DespesaServiceBean implements Serializable{
     	
 	}
     
+    @GET
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/consultalimite")
     public Limite consultaLimite(){
     	
     	//TODO COLOCAR TRATAMENTO

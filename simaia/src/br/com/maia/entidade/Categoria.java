@@ -4,6 +4,7 @@
 package br.com.maia.entidade;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,6 +36,8 @@ public class Categoria implements Serializable {
 	@Column(length=60, nullable=false, name="nomeCategoria")
 	private String nomeCategoria;
 	
+	@Column(nullable=false, name="limiteCategoria")
+	private BigDecimal limiteCategoria;
 	
 	/* (non-Javadoc)
 	 * @see br.com.maia.entidades.IUsuario#getId()
@@ -95,6 +98,14 @@ public class Categoria implements Serializable {
 	@Override
 	public String toString() {
 		return "Categoria [id=" + id + ", nomeCategoria=" + nomeCategoria + "]";
+	}
+
+	public BigDecimal getLimiteCategoria() {
+		return limiteCategoria;
+	}
+
+	public void setLimiteCategoria(BigDecimal limiteCategoria) {
+		this.limiteCategoria = limiteCategoria;
 	}
 
 		

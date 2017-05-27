@@ -55,10 +55,13 @@ public class LoginBean implements Serializable {
 	
 	public String efetuarLogin(){
 		
-		Usuario usuario;
+		Usuario usuario = new Usuario();;
 		try {
 			
-			usuario = usuarioService.efetuarLogin(username, password);
+			usuario.setUsername(username);
+			usuario.setPassword(password);
+			
+			usuario = usuarioService.efetuarLogin(usuario);
 			
 			if(usuario == null){
 				Util.addError(PoolString.USUARIO_OU_SENHA_INVÁLIDOS);

@@ -12,10 +12,8 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 
 import org.apache.commons.io.IOUtils;
 import org.primefaces.event.FileUploadEvent;
@@ -30,6 +28,7 @@ import br.com.maia.entidade.Despesa;
 import br.com.maia.entidade.Parcela;
 import br.com.maia.servico.CategoriaServiceBean;
 import br.com.maia.servico.DespesaServiceBean;
+import br.com.maia.servico.parametros.ConsultaDespesasParameter;
 import br.com.maia.util.PoolString;
 import br.com.maia.util.Util;
 
@@ -355,7 +354,7 @@ public class DespesaBean implements Serializable {
         		return null;
         	}
         	
-    		parcelas = despesaService.consultaDespesas(nomeDespesa, idCategoria, mes, ano);
+    		parcelas = despesaService.consultaDespesas(new ConsultaDespesasParameter(nomeDespesa, idCategoria, mes, ano));
     		parcelasModel = new ParcelaDataModel(parcelas);
     		if(isListaVazia()){
     			Util.addInfo(PoolString.SEM_RESULTADO);

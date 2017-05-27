@@ -10,6 +10,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 import br.com.maia.entidade.Usuario;
 import br.com.maia.util.PoolString;
@@ -19,6 +24,7 @@ import br.com.maia.util.PoolString;
  */
 @Stateless(mappedName = "UsuarioServiceBean")
 @LocalBean
+@Path("/usuario")
 public class UsuarioServiceBean implements Serializable {
 	
    /**
@@ -34,14 +40,18 @@ public class UsuarioServiceBean implements Serializable {
  * @param password
  * @return IUsuario
  */
-  public Usuario efetuarLogin(String userName, String password){
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  @Path("/login")
+  public Usuario efetuarLogin(Usuario user){
 	   
 	   try {
 		   Usuario usuario = null;
 		   
 		   Query query = session.createQuery(" from Usuario u where u.username = :username and u.password = :password "); 
-		   query.setParameter("password", password);
-		   query.setParameter("username", userName);
+		   query.setParameter("password", user.getPassword());
+		   query.setParameter("username", user.getUsername());
 		   
 		   usuario  = (Usuario) query.getSingleResult();
 		   		   
