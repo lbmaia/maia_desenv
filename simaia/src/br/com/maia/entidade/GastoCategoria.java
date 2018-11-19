@@ -12,26 +12,29 @@ public class GastoCategoria extends Gasto {
 	private static final long serialVersionUID = 5624855633364927044L;
 	private String nomeCategoria;
 	
-	public GastoCategoria(String nomeCategoria, Integer ano, BigDecimal valorTotal) {
+	public GastoCategoria(String nomeCategoria, Integer ano, BigDecimal valorTotal, BigDecimal valorTotalRealidado) {
 		super();
 		this.nomeCategoria = nomeCategoria;
 		super.setAno(ano);
 		super.setValorTotal(valorTotal);
+		super.setValorTotalRealizado(valorTotalRealidado);
 	}
 	
-	public GastoCategoria(String nomeCategoria, Integer ano, int mes, BigDecimal valorTotal) {
+	public GastoCategoria(String nomeCategoria, Integer ano, int mes, BigDecimal valorTotal, BigDecimal valorTotalRealidado) {
 		super();
 		
 		this.nomeCategoria = nomeCategoria;
 		super.setAno(ano);
 		super.setValorTotal(valorTotal);
+		super.setValorTotalRealizado(valorTotalRealidado);
 		super.setMes(EMes.recuperaMes(mes));
 	}
 	
-	public GastoCategoria(String nomeCategoria,  BigDecimal valorTotal) {
+	public GastoCategoria(String nomeCategoria,  BigDecimal valorTotal, BigDecimal valorTotalRealidado) {
 		super();
 		this.nomeCategoria = nomeCategoria;
 		super.setValorTotal(valorTotal);
+		super.setValorTotalRealizado(valorTotalRealidado);
 	}
 
 	public String getNomeCategoria() {

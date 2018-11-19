@@ -36,7 +36,7 @@
 	                            <br />
 	                            <br />
 	                            <br />				            
-					            <p:commandButton action="#{limitesBean.consultaDespesas()}" update=":formLimite:medidor, :formLimite:despesas"  value="Pesquisar"/>
+					            <p:commandButton action="#{limitesBean.consultaDespesas()}" update=":formLimite:medidorPlanejado, :formLimite:medidorRealizado,  :formLimite:despesas"  value="Pesquisar"/>
 					            <p:spacer width="10px" />
 					            <p:commandButton value="Voltar Menu" action="#{menuBean.retornaMenu()}" />
 					
@@ -47,8 +47,10 @@
 				    
 				    <p:fieldset style="width: 800px;">
                            
-                           <p:meterGaugeChart id="medidor" seriesColors="66cc66, 66cc66, 93b75f, E7E658, cc6666" value="#{limitesBean.medidorGastos}" style="width:400px;height:250px" title="Medidor de Gastos" labelHeightAdjust="110" intervalOuterRadius="100" label="Reais"/> 
-				           
+                           <p:meterGaugeChart id="medidorPlanejado" seriesColors="66cc66, 66cc66, 93b75f, E7E658, cc6666" value="#{limitesBean.medidorGastosPlanejados}" style="width:400px;height:250px" title="Medidor de Gastos Planejados" labelHeightAdjust="110" intervalOuterRadius="100" label="Reais"/>
+                           
+                           <p:meterGaugeChart id="medidorRealizado" seriesColors="66cc66, 66cc66, 93b75f, E7E658, cc6666" value="#{limitesBean.medidorGastosRealizados}" style="width:400px;height:250px" title="Medidor de Gastos Realizados" labelHeightAdjust="110" intervalOuterRadius="100" label="Reais"/> 
+                           
 				           <p:spacer height="20px"/>				     
 				           
 				           <p:dataTable id="despesas" var="despesa" value="#{limitesBean.gastos}">  
@@ -61,19 +63,37 @@
 					              <h:outputText value="#{despesa.nomeCategoria}" />  
 					        </p:column>
 					        
-					        <p:column headerText="Valor" style="width:20%">  
+					        <p:column headerText="Valor Planejado" style="width:20%">  
 					              <h:outputText value="#{despesa.valorTotal}" >
+					                 <f:convertNumber type="currency" maxFractionDigits="2" minFractionDigits="2" />
+					              </h:outputText>  
+					        </p:column>
+					        
+					        <p:column headerText="Valor Realizado" style="width:20%">  
+					              <h:outputText value="#{despesa.valorTotalRealizado}" >
 					                 <f:convertNumber type="currency" maxFractionDigits="2" minFractionDigits="2" />
 					              </h:outputText>  
 					        </p:column>  
 					        
+					        
 					        <f:facet name="footer">  
-					              <h:outputText value="Valor Total: " />
+					              <h:outputText value="Valor Total Planejado: " />
 					              <p:spacer width="20px"/>
-					              <h:outputText value="#{limitesBean.valorTotalDespesa}" >
+					              <h:outputText value="#{limitesBean.valorTotalDespesaPlanejado}" >
 					                 <f:convertNumber type="currency" maxFractionDigits="2" minFractionDigits="2" />
 					              </h:outputText>
 					        </f:facet>
+					        
+					        <f:facet name="footer">  
+					              <p:spacer width="20px"/>
+					              <h:outputText value="Valor Total Realizado: " />
+					              <p:spacer width="20px"/>
+					              <h:outputText value="#{limitesBean.valorTotalDespesaRealizado}" >
+					                 <f:convertNumber type="currency" maxFractionDigits="2" minFractionDigits="2" />
+					              </h:outputText>
+					        </f:facet>
+					        
+					        
 					  
 					    </p:dataTable>
 				           

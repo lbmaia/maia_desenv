@@ -1,14 +1,21 @@
 package br.com.maia.bean;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -165,6 +172,117 @@ public class DespesaBean implements Serializable {
 		return PoolString.DIRETIVA_CAD_DESPESA;
 	}
 	
+	public String incluirParcelas2(){
+		
+		try {
+			//BufferedReader br = new BufferedReader(new FileReader("c:\\users\\leand\\Desktop\\parcelas.txt"));
+			BufferedReader br = new BufferedReader(new FileReader("c:\\users\\leand\\Desktop\\apart.txt"));
+		    Map<String,Despesa> despesas = new HashMap<String, Despesa>();
+		    List<Parcela> listParcelas = null;
+		    Despesa despesa = null;
+		    Categoria categoria = null;
+		    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		    int numParcela = 1;
+		    
+		    while(br.ready()){
+				
+				String [] linha = br.readLine().split(";");
+			    despesa = despesas.get(linha[1].trim());
+				
+				if(despesa == null){
+					listParcelas = new ArrayList<Parcela>();
+					categoria = new Categoria();
+					categoria.setId(Integer.valueOf(linha[0].trim()));
+					despesa = new Despesa();
+					despesa.setDescricao(linha[1].trim());
+					despesa.setCategoria(categoria);
+					despesa.setParcelas(listParcelas);
+					numParcela = 1;
+				}else{
+					numParcela = despesa.getParcelas().size()+1;
+				}
+				
+				BigDecimal valor = new BigDecimal(linha[3].trim());
+				BigDecimal valorPago = new BigDecimal(linha[4].trim());
+				
+				
+				Calendar dataVenc = Calendar.getInstance();
+		        dataVenc.setTime(sdf.parse(linha[2].trim()));
+								
+				Date dataParcela = dataVenc.getTime();
+				
+				
+				
+				if(linha.length > 4){
+				    
+					int inicio = Integer.valueOf(linha[5].trim());
+					int fim = Integer.valueOf(linha[6].trim());
+					
+					for(; inicio <=fim; inicio++){
+						
+						Parcela parcelaNova = new Parcela();
+						parcelaNova.setAnoDespesa(dataVenc.get(Calendar.YEAR));
+						parcelaNova.setMesDespesa(dataVenc.get(Calendar.MONTH)+1);
+						parcelaNova.setDespesa(despesa);
+						parcelaNova.setDtVencimento(dataParcela);
+						parcelaNova.setNumParcela(numParcela);
+						parcelaNova.setQtdParcelas(numParcela);
+						parcelaNova.setValor(valor);
+						parcelaNova.setValorPago(valorPago);
+						parcelaNova.setDtPagamento(valorPago.compareTo(BigDecimal.ZERO) > 0 ? dataParcela : null);
+						listParcelas.add(parcelaNova);
+						dataVenc.add(Calendar.MONTH, 1);
+						dataParcela = dataVenc.getTime();
+						numParcela++;
+					}
+					
+				}else{
+					Parcela parcelaNova = new Parcela();
+					parcelaNova.setAnoDespesa(dataVenc.get(Calendar.YEAR));
+					parcelaNova.setMesDespesa(dataVenc.get(Calendar.MONTH)+1);
+					parcelaNova.setDespesa(despesa);
+					parcelaNova.setDtVencimento(dataParcela);
+					parcelaNova.setNumParcela(numParcela);
+					parcelaNova.setQtdParcelas(numParcela);
+					parcelaNova.setValor(valor);
+					parcelaNova.setValorPago(valorPago);
+					parcelaNova.setDtPagamento(valorPago.compareTo(BigDecimal.ZERO) > 0 ? dataParcela : null);
+					listParcelas.add(parcelaNova);
+				}
+			
+				despesas.put(despesa.getDescricao(), despesa);					
+				
+				
+			}
+			
+			br.close();
+			
+			
+			for(Despesa despesaInc : despesas.values()){
+				
+				for(Parcela parcela : despesaInc.getParcelas()){
+					parcela.setQtdParcelas(despesaInc.getParcelas().size());
+				}
+				
+				despesaService.incluirDespesa(despesaInc);
+			}
+			
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return null;
+	}
+	
 	public String incluirParcelas(){
 		
 		boolean possuiErro = Boolean.FALSE;
@@ -181,7 +299,7 @@ public class DespesaBean implements Serializable {
 		}
 		
 		
-		if(exibeDados && (dataVencimento == null || dataVencimento.before(new Date()))){
+		if(exibeDados && (dataVencimento == null )){
 			Util.addInfo(PoolString.DATA_VENCIMENTO_OBRIG);
 			possuiErro = Boolean.TRUE;
 		}
@@ -216,7 +334,13 @@ public class DespesaBean implements Serializable {
 		totalParcela += getNumParcelas();
 		
 		if(!exibeDados){
-			dataVenc.add(Calendar.DAY_OF_MONTH, 30);
+			
+			if(dataVenc.get(Calendar.MONTH) == Calendar.FEBRUARY && (dataVenc.get(Calendar.DAY_OF_MONTH) > 27 )){
+				dataVenc.set(Calendar.DAY_OF_MONTH, 27);
+			}else{
+				dataVenc.set(Calendar.MONTH, (dataVenc.get(Calendar.MONTH)+1));
+			}			
+			
 		}
 		
 		for(int i = 0; i < getNumParcelas(); i++){
@@ -236,7 +360,11 @@ public class DespesaBean implements Serializable {
 			parcelaNova.setValorPago(BigDecimal.ZERO);
 			parcelas.add(parcelaNova);
 			
-			dataVenc.add(Calendar.DAY_OF_MONTH, 30);
+			if(dataVenc.get(Calendar.MONTH) == Calendar.JANUARY && (dataVenc.get(Calendar.DAY_OF_MONTH) > 27 )){
+				dataVenc.set(Calendar.DAY_OF_MONTH, 27);
+			}else{
+				dataVenc.add(Calendar.MONTH, 1);
+			}
 			
 		}
 		

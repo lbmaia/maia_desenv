@@ -206,7 +206,7 @@ public class DespesaServiceBean implements Serializable{
 	public List<Gasto> consultaGastosIntervaloAnual(@PathParam("inicio")Integer anoInicial, @PathParam("fim")Integer anoFinal){
     	
     	List<Gasto> gastoAnual = new ArrayList<Gasto>();
-    	StringBuilder sb = new StringBuilder("select new br.com.maia.entidade.Gasto(p.anoDespesa, sum(p.valor)) from Parcela p  ");
+    	StringBuilder sb = new StringBuilder("select new br.com.maia.entidade.Gasto(p.anoDespesa, sum(p.valor), sum(p.valorPago)) from Parcela p  ");
     	                           sb.append("where p.dtVencimento between :dataInicial and :dataFinal ");
     	                           sb.append("group by p.anoDespesa ");
     	                           sb.append("order by p.anoDespesa asc ");
@@ -266,7 +266,7 @@ public class DespesaServiceBean implements Serializable{
     	
     	List<Gasto> gastoAnual = new ArrayList<Gasto>();
     	
-    	StringBuilder sb = new StringBuilder("select new br.com.maia.entidade.Gasto(p.anoDespesa, p.mesDespesa , sum(p.valor)) from Parcela p  ");
+    	StringBuilder sb = new StringBuilder("select new br.com.maia.entidade.Gasto(p.anoDespesa, p.mesDespesa , sum(p.valor), sum(p.valorPago)) from Parcela p  ");
     	                           sb.append("where p.dtVencimento between :dataInicial and :dataFinal ");
     	                           sb.append("group by p.anoDespesa, p.mesDespesa ");
     	                           sb.append("order by p.anoDespesa, p.mesDespesa asc ");
@@ -328,7 +328,7 @@ public class DespesaServiceBean implements Serializable{
     	
     	List<GastoCategoria> gastoAnual = new ArrayList<GastoCategoria>();
     	
-    	StringBuilder sb = new StringBuilder("select new br.com.maia.entidade.GastoCategoria( c.nomeCategoria , p.anoDespesa, sum(p.valor)) from Despesa d  ");
+    	StringBuilder sb = new StringBuilder("select new br.com.maia.entidade.GastoCategoria( c.nomeCategoria , p.anoDespesa, sum(p.valor), sum(p.valorPago)) from Despesa d  ");
     	                           sb.append("inner join d.parcelas p ");
     	                           sb.append("inner join d.categoria c ");
     	                           sb.append("where p.dtVencimento between :dataInicial and :dataFinal ");
@@ -400,7 +400,7 @@ public class DespesaServiceBean implements Serializable{
     	
        List<GastoCategoria> gastoAnual = new ArrayList<GastoCategoria>();
     	
-       StringBuilder sb = new StringBuilder("select new br.com.maia.entidade.GastoCategoria( c.nomeCategoria , p.anoDespesa, p.mesDespesa , sum(p.valor)) from Despesa d  ");
+       StringBuilder sb = new StringBuilder("select new br.com.maia.entidade.GastoCategoria( c.nomeCategoria , p.anoDespesa, p.mesDespesa , sum(p.valor), sum(p.valorPago)) from Despesa d  ");
        								sb.append("inner join d.parcelas p ");
        								sb.append("inner join d.categoria c ");
        								sb.append("where p.dtVencimento between :dataInicial and :dataFinal ");
@@ -475,7 +475,7 @@ public class DespesaServiceBean implements Serializable{
     	
     	List<GastoCategoria> gastoAnual = new ArrayList<GastoCategoria>();
     	
-    	StringBuilder sb = new StringBuilder("select new br.com.maia.entidade.GastoCategoria( c.nomeCategoria ,  sum(p.valor)) from Parcela p  ");
+    	StringBuilder sb = new StringBuilder("select new br.com.maia.entidade.GastoCategoria( c.nomeCategoria ,  sum(p.valor), sum(p.valorPago)) from Parcela p  ");
 			sb.append("inner join p.despesa d ");
 			sb.append("inner join d.categoria c ");
 			sb.append("where p.dtVencimento between :dataInicial and :dataFinal ");
@@ -537,7 +537,7 @@ public class DespesaServiceBean implements Serializable{
     	
     	List<GastoCategoria> gastoAnual = new ArrayList<GastoCategoria>();
     	
-    	StringBuilder sb = new StringBuilder("select new br.com.maia.entidade.GastoCategoria( c.nomeCategoria ,  sum(p.valor)) from Parcela p  ");
+    	StringBuilder sb = new StringBuilder("select new br.com.maia.entidade.GastoCategoria( c.nomeCategoria ,  sum(p.valor), sum(p.valorPago)) from Parcela p  ");
 			sb.append("inner join p.despesa d ");
 			sb.append("inner join d.categoria c ");
 			sb.append("where p.mesDespesa = :mes and p.anoDespesa = :ano ");

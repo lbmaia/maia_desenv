@@ -34,26 +34,32 @@ public class LimitesBean implements Serializable{
 	private Limite limite;
 	private Integer mes;
 	private Integer ano;
-	private MeterGaugeChartModel medidorGastos;
-	private Number valorGastoTotal;
+	private MeterGaugeChartModel medidorGastosPlanejados;
+	private MeterGaugeChartModel medidorGastosRealizados;
+	private Number valorGastoTotalPlanejado;
+	private Number valorGastoTotalRealizado;
 	private List<Number> intervalos;
 	private List<GastoCategoria> gastos;
-	private BigDecimal valorTotalDespesa;
+	private BigDecimal valorTotalDespesaPlanejado;
+	private BigDecimal valorTotalDespesaRealizado;
 	
 	@PostConstruct
 	public void init(){
 		limite = despesaService.consultaLimite();
-		valorGastoTotal = BigDecimal.ZERO;
-		valorTotalDespesa = BigDecimal.ZERO;
+		valorGastoTotalPlanejado = BigDecimal.ZERO;
+		setValorTotalDespesaPlanejado(BigDecimal.ZERO);
+		valorGastoTotalRealizado = BigDecimal.ZERO;
+		setValorTotalDespesaRealizado(BigDecimal.ZERO);
 		montaIntervalos();
-		medidorGastos = new MeterGaugeChartModel(valorGastoTotal, intervalos, intervalos);
+		setMedidorGastosPlanejados(new MeterGaugeChartModel(valorGastoTotalPlanejado, intervalos, intervalos));
+		setMedidorGastosRealizados(new MeterGaugeChartModel(valorGastoTotalRealizado, intervalos, intervalos));
 	}
 
 	private void montaIntervalos() {
 		intervalos = new ArrayList<Number>();
 		intervalos.add(BigDecimal.ZERO);
-		intervalos.add(new BigDecimal("2000"));
 		intervalos.add(new BigDecimal("4000"));
+		intervalos.add(new BigDecimal("8000"));
 		intervalos.add(limite.getLimiteAlerta());
 		intervalos.add(limite.getLimiteMaximo());
 		
@@ -72,15 +78,20 @@ public class LimitesBean implements Serializable{
     	}
     	
     	gastos = despesaService.consultaGastosCategoriaPorPeriodo(mes, ano);
-    	BigDecimal valorTotal = BigDecimal.ZERO;
+    	BigDecimal valorTotalPlanejado = BigDecimal.ZERO;
+    	BigDecimal valorTotalRealizado = BigDecimal.ZERO;
     	
     	for(GastoCategoria gasto : gastos){
-    		valorTotal = valorTotal.add(gasto.getValorTotal());
+    		valorTotalPlanejado = valorTotalPlanejado.add(gasto.getValorTotal());
+    		valorTotalRealizado = valorTotalRealizado.add(gasto.getValorTotalRealizado());
     	}
     	
-    	valorGastoTotal = valorTotal;
-    	valorTotalDespesa = valorTotal;
-    	medidorGastos = new MeterGaugeChartModel(valorGastoTotal, intervalos);
+    	valorGastoTotalPlanejado = valorTotalPlanejado;
+    	valorGastoTotalRealizado = valorTotalRealizado;
+    	setValorTotalDespesaPlanejado(valorTotalPlanejado);
+    	setValorTotalDespesaRealizado(valorTotalRealizado);
+    	setMedidorGastosPlanejados(new MeterGaugeChartModel(valorGastoTotalPlanejado, intervalos));
+    	setMedidorGastosRealizados(new MeterGaugeChartModel(valorGastoTotalRealizado, intervalos));
     	
 		return null;
 	}
@@ -109,14 +120,6 @@ public class LimitesBean implements Serializable{
 		this.ano = ano;
 	}
 
-	public MeterGaugeChartModel getMedidorGastos() {
-		return medidorGastos;
-	}
-
-	public void setMedidorGastos(MeterGaugeChartModel medidorGastos) {
-		this.medidorGastos = medidorGastos;
-	}
-
 	public List<GastoCategoria> getGastos() {
 		return gastos;
 	}
@@ -125,13 +128,37 @@ public class LimitesBean implements Serializable{
 		this.gastos = gastos;
 	}
 
-	public BigDecimal getValorTotalDespesa() {
-		return valorTotalDespesa;
+	public MeterGaugeChartModel getMedidorGastosPlanejados() {
+		return medidorGastosPlanejados;
 	}
 
-	public void setValorTotalDespesa(BigDecimal valorTotalDespesa) {
-		this.valorTotalDespesa = valorTotalDespesa;
+	public void setMedidorGastosPlanejados(MeterGaugeChartModel medidorGastosPlanejados) {
+		this.medidorGastosPlanejados = medidorGastosPlanejados;
 	}
 
+	public MeterGaugeChartModel getMedidorGastosRealizados() {
+		return medidorGastosRealizados;
+	}
+
+	public void setMedidorGastosRealizados(MeterGaugeChartModel medidorGastosRealizados) {
+		this.medidorGastosRealizados = medidorGastosRealizados;
+	}
+
+	public BigDecimal getValorTotalDespesaPlanejado() {
+		return valorTotalDespesaPlanejado;
+	}
+
+	public void setValorTotalDespesaPlanejado(BigDecimal valorTotalDespesaPlanejado) {
+		this.valorTotalDespesaPlanejado = valorTotalDespesaPlanejado;
+	}
+
+	public BigDecimal getValorTotalDespesaRealizado() {
+		return valorTotalDespesaRealizado;
+	}
+
+	public void setValorTotalDespesaRealizado(BigDecimal valorTotalDespesaRealizado) {
+		this.valorTotalDespesaRealizado = valorTotalDespesaRealizado;
+	}
+	
 	
 }
